@@ -36,4 +36,20 @@ router.put("/:id", checkId, updateFields, (req, res, next) => {
   .catch(next)
 })
 
+router.delete("/:id", checkId, (req, res, next) => {
+  Projects.remove(req.params.id)
+  .then(projectDelete => {
+    res.json(projectDelete)
+  })
+  .catch(next)
+})
+
+router.get("/:id/actions", checkId, (req, res, next) => {
+  Projects.getProjectActions(req.params.id)
+  .then(actions => {
+    res.json(actions)
+  })
+  .catch(next)
+})
+
 module.exports = router
