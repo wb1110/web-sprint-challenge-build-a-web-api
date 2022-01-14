@@ -1,5 +1,6 @@
 // add middlewares here related to actions
 const Actions = require('./actions-model');
+const Projects = require('../projects/projects-model');
 
 async function checkId (req, res, next) {
   try {
@@ -7,7 +8,7 @@ async function checkId (req, res, next) {
     if (projectId) {
       next()
     } else {
-      next(res.status(404).json({ message: "No project with that ID exists!" }))
+      next(res.status(404).json({ message: "No action with that ID exists!" }))
     }
   } catch(err) {
     next(err)
@@ -16,7 +17,12 @@ async function checkId (req, res, next) {
 
 async function checkFields (req, res, next) {
   try {
-    if (req.body.notes && req.body.description && req.body.project_id) {
+    if (
+      req.body.notes 
+      && req.body.description 
+      && req.body.project_id
+      && Projects.get(req.body.project_id)
+      ) {
       next()
     } else {
       next(res.status(400).json({ message: "Missing required field!" }))
