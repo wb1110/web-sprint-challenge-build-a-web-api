@@ -28,7 +28,12 @@ async function checkFields (req, res, next) {
 
 async function updateFields (req, res, next) {
   try {
-    if (req.body.name && req.body.description && (Object.prototype.hasOwnProperty.call(req.body, "completed"))) {
+    if (
+      req.body.project_id && 
+      req.body.description && 
+      req.body.notes &&
+      (Object.prototype.hasOwnProperty.call(req.body, "completed"))
+      ) {
       next()
     } else {
       next(res.status(400).json({ message: "Missing required field!" }))
