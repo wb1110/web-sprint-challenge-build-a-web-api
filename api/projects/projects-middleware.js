@@ -2,7 +2,6 @@
 const Projects = require('./projects-model');
 
 async function checkId (req, res, next) {
-  console.log('checking id')
   try {
     const projectId = await Projects.get(req.params.id)
     if (projectId) {
@@ -15,4 +14,19 @@ async function checkId (req, res, next) {
   }
 }
 
-module.exports = checkId
+async function checkFields (req, res, next) {
+  try {
+    if (req.body.name && req.body.description) {
+      next()
+    } else {
+      next(res.status(400).json({ message: "Missing required field!" }))
+    }
+  } catch(err) {
+    next(err)
+  }
+}
+
+module.exports = {
+  checkId,
+  checkFields
+}
